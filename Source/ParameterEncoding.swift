@@ -42,7 +42,7 @@ public enum HTTPMethod: String {
 // MARK: -
 
 /// A dictionary of parameters to apply to a `URLRequest`.
-public typealias Parameters = [String: Any]
+public typealias Parameters = Any
 
 /// A type used to define how a set of parameters are applied to a `URLRequest`.
 public protocol ParameterEncoding {
@@ -174,7 +174,7 @@ public struct URLEncoding: ParameterEncoding {
     public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
         var urlRequest = try urlRequest.asURLRequest()
 
-        guard let parameters = parameters else { return urlRequest }
+        guard let parameters = parameters as? [String : Any] else { return urlRequest }
 
         if let method = HTTPMethod(rawValue: urlRequest.httpMethod ?? "GET"), encodesParametersInURL(with: method) {
             guard let url = urlRequest.url else {
